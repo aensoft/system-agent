@@ -66,10 +66,16 @@
 				<classifier>bin</classifier>
 				<type>exe</type>
 		</dependency>		
+  
+    <dependency>
+      <groupId>no.tornado</groupId>
+      <artifactId>tornadofx-android-compat</artifactId>
+      <version>1.0.1</version>
+    </dependency>
   </dependencies>
 
 	<build>
-		<finalName>system-agent</finalName>
+		<finalName>System Agent</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

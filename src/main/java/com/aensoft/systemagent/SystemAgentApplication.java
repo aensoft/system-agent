@@ -10,7 +10,11 @@ import java.util.Base64;
 import javax.crypto.KeyGenerator;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.wavefront.WavefrontProperties.Application;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,7 +74,7 @@ public class SystemAgentApplication {
 	@PostMapping("/shutdown")
 	public ResponseEntity<String> shutdown() {
 		try {
-			Runtime.getRuntime().exec(new String[] { "shutdown", "/s" });
+			Runtime.getRuntime().exec(new String[] { "shutdown", "/p" });
 			return new ResponseEntity<String>("", HttpStatus.OK);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -111,9 +115,15 @@ public class SystemAgentApplication {
 		}
 	}
 
+	public static ConfigurableApplicationContext context;
 	public static void main(String[] args) {
-		SpringApplication.run(SystemAgentApplication.class, args);
+		//SpringApplication.run(SystemAgentApplication.class, args);
 		initAuthorizationKey();
+		SpringApplicationBuilder builder = new SpringApplicationBuilder(SystemAgentApplication.class);
+        builder.headless(false);
+        context = builder.run(args);
+
+        SystemAgentTrayIcon m = new SystemAgentTrayIcon();
 	}
 
 }
